@@ -1,10 +1,41 @@
 = pinephone-mobile-nixos-flake-example
+:toc:
 
 example of a simple mobile-nixos config, using Nix Flakes, which can be:
 
-- built on a Pinephone (linking `flake.nix` into `/etc/nixos`), ideally making use of a local `aarch64` binary cache / builder machine, so that the Pinephone doesn't have to rebuild itself
 - used to generate a disk image which can be flashed / written to an SD card and booted
+- built on a Pinephone, ideally making use of a local `aarch64` binary cache / builder machine, so that the Pinephone doesn't have to rebuild itself
+
+I did mostly packaging work here, all credit for the initial implementation is due to @zhaofengli, via this PR:
+https://github.com/NixOS/mobile-nixos/pull/352
+
+🙇
 
 == building the disk image
 
-\...
+[source]
+----
+nix build .#pinephone-disk-image --impure
+----
+
+=== caveats
+
+I didn't bother to modularize the HM config out of the flake, so the disk image will lack that config for `defaultUserName`.
+however that could be rewritten, or one could just run the below commands inside of the Pinephone NixOS terminal, in order to rebuild the system with the full HM user config.
+
+== building the system config
+
+[source]
+----
+# just testing, not replacing current generation
+nixos-rebuild build --flake .#pinephone
+----
+
+or
+
+[source]
+----
+# replace current generation
+ln -sr ./flake.nix /etc/nixos
+nixos-rebuild switch
+----
