@@ -40,4 +40,3 @@ in
     ".ghci".text = builtins.readFile ./home/ghc/ghci;
   };
 }
-}
