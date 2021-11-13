@@ -25,13 +25,16 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              (import ./configuration.nix { inherit defaultUserName inputs; })
+              (import ./configuration.nix defaultUserName)
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.users.${defaultUserName} = import ./hm-user.nix;
               }
+              (import "${mobile-nixos}/lib/configuration.nix" {
+                device = "pine64-pinephone";
+              })
             ];
           };
 
@@ -39,7 +42,7 @@
 
     pinephone-disk-image =
       (import "${mobile-nixos}/lib/eval-with-configuration.nix" {
-        configuration = [ (import ./configuration.nix { inherit defaultUserName inputs; }) ];
+        configuration = [ (import ./configuration.nix defaultUserName) ];
         device = "pine64-pinephone";
         pkgs = nixpkgs.legacyPackages.${system};
       }).outputs.disk-image;

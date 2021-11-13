@@ -1,4 +1,4 @@
-{ defaultUserName, inputs}:
+defaultUserName:
 { config, lib, pkgs, ... }:
 
 let
@@ -8,9 +8,6 @@ in
 
 {
   imports = [
-    (import "${inputs.mobile-nixos}/lib/configuration.nix" {
-      device = "pine64-pinephone";
-    })
   ];
 
   config = {
