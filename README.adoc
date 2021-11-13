@@ -1,0 +1,10 @@
+= pinephone-mobile-nixos-flake-example
+
+example of a simple mobile-nixos config, using Nix Flakes, which can be:
+
+- built on a Pinephone (linking `flake.nix` into `/etc/nixos`), ideally making use of a local `aarch64` binary cache / builder machine, so that the Pinephone doesn't have to rebuild itself
+- used to generate a disk image which can be flashed / written to an SD card and booted
+
+== building the disk image
+
+\...
