@@ -1,5 +1,5 @@
-defaultUserName:
-{ config, lib, pkgs, inputs, ... }:
+{ defaultUserName, inputs}:
+{ config, lib, pkgs, ... }:
 
 let
   hostName = "pinephone";

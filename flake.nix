@@ -12,19 +12,20 @@
   };
 
   outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, mobile-nixos, ... }:
+  let
+    system = "aarch64-linux";
+    defaultUserName = "dev";
+  in
   {
     nixosConfigurations =
       {
         ########################################################################
         pinephone =
         ########################################################################
-          let
-            defaultUserName = "dev";
-          in
           nixpkgs.lib.nixosSystem {
-            system = "aarch64-linux";
+            inherit system;
             modules = [
-              (import ./configuration.nix defaultUserName)
+              (import ./configuration.nix { inherit defaultUserName inputs; })
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -32,9 +33,15 @@
                 home-manager.users.${defaultUserName} = import ./hm-user.nix;
               }
             ];
-            specialArgs = { inherit inputs; };
           };
 
       };
+
+    pinephone-disk-image =
+      (import "${mobile-nixos}/lib/eval-with-configuration.nix" {
+        configuration = [ (import ./configuration.nix { inherit defaultUserName inputs; }) ];
+        device = "pine64-pinephone";
+        pkgs = nixpkgs.legacyPackages.${system};
+      }).outputs.disk-image;
   };
 }
