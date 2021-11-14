@@ -23,6 +23,10 @@ nix build .#pinephone-disk-image --impure
 I didn't bother to modularize the HM config out of the flake, so the disk image will lack that config for `defaultUserName`.
 however that could be rewritten, or one could just run the below commands inside of the Pinephone NixOS terminal, in order to rebuild the system with the full HM user config.
 
+=== resizing partitions
+
+use `cfdisk` and `resize2fs`.
+
 == building the system config
 
 [source]
