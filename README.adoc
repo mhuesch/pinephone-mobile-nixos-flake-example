@@ -1,13 +1,14 @@
 = pinephone-mobile-nixos-flake-example
 :toc:
 
-example of a simple mobile-nixos config, using Nix Flakes, which can be:
+---
+
+this is a simple example mobile-nixos config, with phosh, using Nix Flakes, which can be:
 
 - used to generate a disk image which can be flashed / written to an SD card and booted
 - built on a Pinephone, ideally making use of a local `aarch64` binary cache / builder machine, so that the Pinephone doesn't have to rebuild itself
 
-I did mostly packaging work here, all credit for the initial implementation is due to @zhaofengli, via this PR:
-https://github.com/NixOS/mobile-nixos/pull/352
+I did minor packaging work here - all credit for the actual implementation is due to @zhaofengli, from this PR (https://github.com/NixOS/mobile-nixos/pull/352), and to all of the mobile-nixos contributors.
 
 🙇
 
@@ -17,6 +18,8 @@ https://github.com/NixOS/mobile-nixos/pull/352
 ----
 nix build .#pinephone-disk-image --impure
 ----
+
+this can then be written to an SD card with `dd`.
 
 === caveats
 
