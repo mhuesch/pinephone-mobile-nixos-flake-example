@@ -9,9 +9,13 @@
       url = github:NixOS/mobile-nixos;
       flake = false;
     };
+    mobile-nixos-ppp = {
+      url = github:samueldr-wip/mobile-nixos-wip/wip/pinephone-pro;
+      flake = false;
+    };
   };
 
-  outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, mobile-nixos, ... }:
+  outputs = inputs @ { nixpkgs, nixpkgs-unstable, home-manager, mobile-nixos, mobile-nixos-ppp, ... }:
   let
     system = "aarch64-linux";
     defaultUserName = "dev";
@@ -25,7 +29,26 @@
           nixpkgs.lib.nixosSystem {
             inherit system;
             modules = [
-              (import ./configuration.nix defaultUserName)
+              (import ./configuration-pinephone.nix defaultUserName)
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.${defaultUserName} = import ./hm-user.nix;
+              }
+              (import "${mobile-nixos}/lib/configuration.nix" {
+                device = "pine64-pinephone";
+              })
+            ];
+          };
+
+        ########################################################################
+        pinephonepro =
+        ########################################################################
+          nixpkgs.lib.nixosSystem {
+            inherit system;
+            modules = [
+              (import ./configuration-pinephonepro.nix defaultUserName)
               home-manager.nixosModules.home-manager
               {
                 home-manager.useGlobalPkgs = true;
@@ -42,8 +65,15 @@
 
     pinephone-disk-image =
       (import "${mobile-nixos}/lib/eval-with-configuration.nix" {
-        configuration = [ (import ./configuration.nix defaultUserName) ];
+        configuration = [ (import ./configuration-pinephone.nix defaultUserName) ];
         device = "pine64-pinephone";
+        pkgs = nixpkgs.legacyPackages.${system};
+      }).outputs.disk-image;
+
+    pinephonepro-disk-image =
+      (import "${mobile-nixos-ppp}/lib/eval-with-configuration.nix" {
+        configuration = [ (import ./configuration-pinephonepro.nix defaultUserName) ];
+        device = "pine64-pinephonepro";
         pkgs = nixpkgs.legacyPackages.${system};
       }).outputs.disk-image;
   };

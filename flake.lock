@@ -35,6 +35,23 @@
         "type": "github"
       }
     },
+    "mobile-nixos-ppp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1639966445,
+        "narHash": "sha256-qZ12rpo7tql9yZHB1Gg0ygFgZ7OQWqa00OYPco8z10U=",
+        "owner": "samueldr-wip",
+        "repo": "mobile-nixos-wip",
+        "rev": "22891f1742a49b87611ba79c4a89d8ac85e2d7b1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "samueldr-wip",
+        "ref": "wip/pinephone-pro",
+        "repo": "mobile-nixos-wip",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1636778609,
@@ -85,6 +102,7 @@
       "inputs": {
         "home-manager": "home-manager",
         "mobile-nixos": "mobile-nixos",
+        "mobile-nixos-ppp": "mobile-nixos-ppp",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }
